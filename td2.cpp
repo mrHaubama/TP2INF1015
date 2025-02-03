@@ -69,26 +69,32 @@ ListeFilms ajouterFilm(Film* filmPtr, ListeFilms* listeFilmsPtr) {
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
-span<const Acteur> spanListeActeur(ListeActeurs listeActeurs) {
-	return
+span<Acteur*> spanListeActeur(ListeActeurs listeActeurs) {
+	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
 }
-Acteur* ChercherActeur(ListeFilms& listeFilms) {
-	Film* ref = *listeFilms.elements;
-	for (auto film : span<const Film*> ref) {
-
-		for (auto auteur : span<const Acteur**> film.acteurs) {
-
+Acteur* ChercherActeur(ListeFilms& listeFilms, string nomActeur) {
+	Acteur* acteur= nullptr;
+	for (auto film : spanListeFilms(listeFilms)) {
+		for (auto acteurExistant : spanListeActeur(film->acteurs)) {
+			if (acteurExistant->nom == nomActeur) {
+				return acteurExistant;
+			}		
 		}
 	}
+	return acteur;
 }
 //TODO: Compléter les fonctions pour lire le fichier et créer/allouer une ListeFilms.  La ListeFilms devra être passée entre les fonctions, pour vérifier l'existence d'un Acteur avant de l'allouer à nouveau (cherché par nom en utilisant la fonction ci-dessus).
-Acteur* lireActeur(istream& fichier)
+Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 {
 	Acteur acteur = {};
 	acteur.nom            = lireString(fichier);
 	acteur.anneeNaissance = lireUint16 (fichier);
 	acteur.sexe           = lireUint8  (fichier);
-	return {}; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
+	Acteur* ptrActeur = ChercherActeur(listeFilms, acteur.nom);
+	if (ptrActeur == nullptr) {
+		return &acteur;
+	}
+	return ptrActeur; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
 
 Film* lireFilm(istream& fichier)
