@@ -48,7 +48,23 @@ string lireString(istream& fichier)
 
 #pragma endregion//}
 
+span<Film*> spanListeFilms(ListeFilms& listFilms) {
+	return span<Film*>(listFilms.elements, listFilms.capacite);
+}
+
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
+ListeFilms ajouterFilm(Film* filmPtr, ListeFilms* listeFilmsPtr) {
+	if (listeFilmsPtr->nElements == listeFilmsPtr->capacite) {
+		ListeFilms* nouvelleListeFilms = new ListeFilms{};
+		nouvelleListeFilms->capacite = 2 * listeFilmsPtr->capacite;
+		nouvelleListeFilms->nElements = listeFilmsPtr->nElements;
+		
+		for (Film* films : spanListeFilms(*listeFilmsPtr)) {
+
+		}
+		delete listeFilmsPtr;
+	}
+}
 
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
 
