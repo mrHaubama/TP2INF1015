@@ -55,7 +55,7 @@ span<Film*> spanListeFilms(const ListeFilms& listFilms) {
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
 void ajouterFilm(ListeFilms& listeFilms, Film* filmPtr) {
 	if (listeFilms.nElements == listeFilms.capacite) {
-		int nouvelleCapacite = 2 * listeFilms.capacite;
+		int nouvelleCapacite = 2 * listeFilms.capacite | 1;
 		Film** nouvelleListeFilms = new Film * [nouvelleCapacite];
 		
 		for (int filmIndex: range(0,listeFilms.nElements)) {
@@ -73,7 +73,9 @@ void ajouterFilm(ListeFilms& listeFilms, Film* filmPtr) {
 }
 
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
+void enleverFilm(ListeFilms& listFilms, Film* film) {
 
+}
 
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
