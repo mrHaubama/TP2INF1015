@@ -53,7 +53,18 @@ string lireString(istream& fichier)
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
+span<const Acteur> spanListeActeur(ListeActeurs listeActeurs) {
+	return
+}
+Acteur* ChercherActeur(ListeFilms& listeFilms) {
+	Film* ref = *listeFilms.elements;
+	for (auto film : span<const Film*> ref) {
 
+		for (auto auteur : span<const Acteur**> film.acteurs) {
+
+		}
+	}
+}
 //TODO: Compléter les fonctions pour lire le fichier et créer/allouer une ListeFilms.  La ListeFilms devra être passée entre les fonctions, pour vérifier l'existence d'un Acteur avant de l'allouer à nouveau (cherché par nom en utilisant la fonction ci-dessus).
 Acteur* lireActeur(istream& fichier)
 {
@@ -74,6 +85,7 @@ Film* lireFilm(istream& fichier)
 	film.acteurs.nElements = lireUint8 (fichier);  //NOTE: Vous avez le droit d'allouer d'un coup le tableau pour les acteurs, sans faire de réallocation comme pour ListeFilms.  Vous pouvez aussi copier-coller les fonctions d'allocation de ListeFilms ci-dessus dans des nouvelles fonctions et faire un remplacement de Film par Acteur, pour réutiliser cette réallocation.
 	for (int i = 0; i < film.acteurs.nElements; i++) {
 		lireActeur(fichier); //TODO: Placer l'acteur au bon endroit dans les acteurs du film.
+
 		//TODO: Ajouter le film à la liste des films dans lesquels l'acteur joue.
 	}
 	return {}; //TODO: Retourner le pointeur vers le nouveau film.
@@ -87,8 +99,10 @@ ListeFilms creerListe(string nomFichier)
 	int nElements = lireUint16(fichier);
 
 	//TODO: Créer une liste de films vide.
+	Film* listeFilms = new Film[1];
 	for (int i = 0; i < nElements; i++) {
 		lireFilm(fichier); //TODO: Ajouter le film à la liste.
+		ajouterFilm(,listFilms)
 	}
 	
 	return {}; //TODO: Retourner la liste de films.
