@@ -73,15 +73,14 @@ span<Acteur*> spanListeActeur(ListeActeurs listeActeurs) {
 	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
 }
 Acteur* ChercherActeur(ListeFilms& listeFilms, string nomActeur) {
-	Acteur* acteur= nullptr;
-	for (auto film : spanListeFilms(listeFilms)) {
-		for (auto acteurExistant : spanListeActeur(film->acteurs)) {
-			if (acteurExistant->nom == nomActeur) {
-				return acteurExistant;
+	for (auto filmPtr : spanListeFilms(listeFilms)) {
+		for (auto acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
+			if (acteurExistantPtr->nom == nomActeur) {
+				return acteurExistantPtr;
 			}		
 		}
 	}
-	return acteur;
+	return nullptr;
 }
 //TODO: Compléter les fonctions pour lire le fichier et créer/allouer une ListeFilms.  La ListeFilms devra être passée entre les fonctions, pour vérifier l'existence d'un Acteur avant de l'allouer à nouveau (cherché par nom en utilisant la fonction ci-dessus).
 Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
@@ -90,11 +89,11 @@ Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 	acteur.nom            = lireString(fichier);
 	acteur.anneeNaissance = lireUint16 (fichier);
 	acteur.sexe           = lireUint8  (fichier);
-	Acteur* ptrActeur = ChercherActeur(listeFilms, acteur.nom);
-	if (ptrActeur == nullptr) {
+	Acteur* acteurPtr = ChercherActeur(listeFilms, acteur.nom);
+	if (acteurPtr == nullptr) {
 		return &acteur;
 	}
-	return ptrActeur; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
+	return acteurPtr; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
 
 Film* lireFilm(istream& fichier)
