@@ -48,25 +48,33 @@ string lireString(istream& fichier)
 
 #pragma endregion//}
 
-span<Film*> spanListeFilms(ListeFilms& listFilms) {
+span<Film*> spanListeFilms(const ListeFilms& listFilms) {
 	return span<Film*>(listFilms.elements, listFilms.capacite);
 }
 
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
-ListeFilms ajouterFilm(Film* filmPtr, ListeFilms* listeFilmsPtr) {
-	if (listeFilmsPtr->nElements == listeFilmsPtr->capacite) {
-		ListeFilms* nouvelleListeFilms = new ListeFilms{};
-		nouvelleListeFilms->capacite = 2 * listeFilmsPtr->capacite;
-		nouvelleListeFilms->nElements = listeFilmsPtr->nElements;
+void ajouterFilm(ListeFilms& listeFilms, Film* filmPtr) {
+	if (listeFilms.nElements == listeFilms.capacite) {
+		int nouvelleCapacite = 2 * listeFilms.capacite;
+		Film** nouvelleListeFilms = new Film * [nouvelleCapacite];
 		
-		for (Film* films : spanListeFilms(*listeFilmsPtr)) {
-
+		for (int filmIndex: range(0,listeFilms.nElements)) {
+			nouvelleListeFilms[filmIndex] = listeFilms.elements[filmIndex];
 		}
-		delete listeFilmsPtr;
+
+		delete[] listeFilms.elements;
+		listeFilms.elements = nouvelleListeFilms;
+		listeFilms.capacite = nouvelleCapacite;
 	}
+
+	int indexNouvelElement = listeFilms.nElements;
+	listeFilms.elements[indexNouvelElement] = filmPtr;
+	listeFilms.nElements++;
 }
 
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
+
+
 
 //TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
 span<const Acteur> spanListeActeur(ListeActeurs listeActeurs) {
