@@ -1,6 +1,4 @@
 ﻿  td2.cpp
-C:\Users\ThomasPronovost\Desktop\Polytechnique_MTL\Hiver_2025\1015_Programmation_orientee_objet_avancee\TP2\TP2INF1015\td2.cpp(130,1): warning C4172: retour de l’adresse de la variable locale ou temporaire : film
-C:\Users\ThomasPronovost\Desktop\Polytechnique_MTL\Hiver_2025\1015_Programmation_orientee_objet_avancee\TP2\TP2INF1015\td2.cpp(112,1): warning C4172: retour de l’adresse de la variable locale ou temporaire : acteur
      Création de la bibliothèque C:\Users\ThomasPronovost\Desktop\Polytechnique_MTL\Hiver_2025\1015_Programmation_orientee_objet_avancee\TP2\TP2INF1015\Debug\td2.lib et de l'objet C:\Users\ThomasPronovost\Desktop\Polytechnique_MTL\Hiver_2025\1015_Programmation_orientee_objet_avancee\TP2\TP2INF1015\Debug\td2.exp
   td2.vcxproj -> C:\Users\ThomasPronovost\Desktop\Polytechnique_MTL\Hiver_2025\1015_Programmation_orientee_objet_avancee\TP2\TP2INF1015\Debug\td2.exe
   'pwsh.exe' n'est pas reconnu en tant que commande interne
