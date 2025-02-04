@@ -143,10 +143,12 @@ ListeFilms creerListe(string nomFichier)
 	{
 		ListeFilms listeFilms = {};
 		listeFilms.elements = new Film* [1];
+		listeFilms.nElements = 1;
+		lireFilms.capacite = 
 
 	}
 	for (int i = 0; i < nElements; i++) {
-		film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.
+		Film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.
 		ajouterFilm(listeFilms, filmPtr);
 	}
 	
