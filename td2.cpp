@@ -140,19 +140,16 @@ ListeFilms creerListe(string nomFichier)
 	int nElements = lireUint16(fichier);
 
 	//TODO: Créer une liste de films vide.
-	{
 		ListeFilms listeFilms = {};
 		listeFilms.elements = new Film* [1];
-		listeFilms.nElements = 1;
-		lireFilms.capacite = 
-
-	}
+		listeFilms.nElements = 0;
+		listeFilms.capacite = 1;
 	for (int i = 0; i < nElements; i++) {
 		Film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.
 		ajouterFilm(listeFilms, filmPtr);
 	}
 	
-	return {}; //TODO: Retourner la liste de films.
+	return listeFilms; //TODO: Retourner la liste de films.
 }
 
 //TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
