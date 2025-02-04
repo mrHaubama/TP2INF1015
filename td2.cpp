@@ -73,8 +73,18 @@ void ajouterFilm(ListeFilms& listeFilms, Film* filmPtr) {
 }
 
 //TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
-void enleverFilm(ListeFilms& listFilms, Film* film) {
+void enleverFilm(ListeFilms& listeFilms, Film* filmAEnleverPtr) {
+	for (int filmIndex : range(0, listeFilms.nElements)) {
+		Film* filmPtr = listeFilms.elements[filmIndex];
+		if (filmAEnleverPtr == filmPtr) {
+			Film* dernierFilmPtr = listeFilms.elements[listeFilms.nElements - 1];
+			listeFilms.elements[filmIndex] = dernierFilmPtr;
 
+			// qu'est ce qui arrive quand c'est le dernier film?? (nElements = 1)
+			listeFilms.nElements--;
+			return;
+		}
+	}
 }
 
 
