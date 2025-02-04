@@ -140,10 +140,14 @@ ListeFilms creerListe(string nomFichier)
 	int nElements = lireUint16(fichier);
 
 	//TODO: Créer une liste de films vide.
-	Film* listeFilms = new Film[1];
+	{
+		ListeFilms listeFilms = {};
+		listeFilms.elements = new Film* [1];
+
+	}
 	for (int i = 0; i < nElements; i++) {
-		lireFilm(fichier); //TODO: Ajouter le film à la liste.
-		ajouterFilm(,listFilms)
+		film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.
+		ajouterFilm(listeFilms, filmPtr);
 	}
 	
 	return {}; //TODO: Retourner la liste de films.
