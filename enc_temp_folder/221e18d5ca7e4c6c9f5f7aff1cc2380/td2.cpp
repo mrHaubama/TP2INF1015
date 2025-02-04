@@ -49,7 +49,7 @@ string lireString(istream& fichier)
 #pragma endregion//}
 
 span<Film*> spanListeFilms(const ListeFilms& listFilms) {
-	return span<Film*>(listFilms.elements, listFilms.nElements);
+	return span<Film*>(listFilms.elements, listFilms.capacite);
 }
 
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
@@ -90,7 +90,6 @@ void enleverFilm(ListeFilms& listeFilms, Film* filmAEnleverPtr) {
 span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs) {
 	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
 }
-
 Acteur* ChercherActeur(ListeFilms& listeFilms, string nomActeur) {
 	for (Film* filmPtr : spanListeFilms(listeFilms)) {
 		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
