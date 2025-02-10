@@ -203,26 +203,32 @@ void afficherActeur(const Acteur& acteur)
 
 //TODO: Une fonction pour afficher un film avec tous ces acteurs (en utilisant la fonction afficherActeur ci-dessus).
 void afficherListeActeur(Film& film) {
+	cout << "  Les acteurs sont :" << endl;
 	for (Acteur* acteurPtr : spanListeActeur(film.acteurs)) {
 		afficherActeur(*acteurPtr);
 	}
 }
 
 
-void afficherListeFilms(const ListeFilms& listeFilms)
+void afficherListeFilms(const ListeFilms& listeFilms, int stop = 0)
 {
 	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = {};
-	cout << ligneDeSeparation;
+	static const string ligneDeSeparation = "\n\033[35m########################################\033[0m\n";
+	cout << ligneDeSeparation << endl;
 	//TODO: Changer le for pour utiliser un span.
-	for (const Film* filmPtr : spanListeFilms(listeFilms)) {
+	if (stop == 0) {
+		stop = listeFilms.nElements;
+	}
+	for (const Film* filmPtr : spanListeFilms(listeFilms).first(stop)) {
 		//TODO: Afficher le film.
-		cout << "  " << filmPtr->titre;
-		if (filmPtr != listeFilms.elements[listeFilms.nElements - 1]) {
-			cout << ", ";
-		}
-		cout << endl;
-		cout << ligneDeSeparation;
+		cout << "  " << filmPtr->titre << ", " << endl;
+		cout << "  " << filmPtr->realisateur << ", ";
+		cout << "  " << filmPtr->anneeSortie << ", ";
+		cout << "  " << filmPtr->recette  << endl;
+		Film film = *filmPtr;
+		afficherListeActeur(film);
+
+		cout << ligneDeSeparation << endl;
 	}
 }
 
@@ -251,7 +257,7 @@ int main()
 	
 	cout << ligneDeSeparation << "Le premier film de la liste est:" << endl;
 	//TODO: Afficher le premier film de la liste.  Devrait être Alien.
-	cout << listeFilms.elements[0]->titre << endl;
+	afficherListeFilms(listeFilms, 1);
 	cout << ligneDeSeparation << "Les films sont:" << endl;
 	//TODO: Afficher la liste des films.  Il devrait y en avoir 7.
 	afficherListeFilms(listeFilms);
