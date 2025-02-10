@@ -112,32 +112,26 @@ void afficherActeur(const Acteur& acteur)
 
 //TODO: Une fonction pour afficher un film avec tous ces acteurs (en utilisant la fonction afficherActeur ci-dessus).
 void afficherListeActeur(Film& film) {
-	cout << "  Les acteurs sont :" << endl;
-	for (Acteur* acteurPtr : spanListeActeur(film.acteurs)) {
+	for (Acteur* acteurPtr : ListeFilms::spanListeActeur(film.acteurs)) {
 		afficherActeur(*acteurPtr);
 	}
 }
 
 
-void afficherListeFilms(const ListeFilms& listeFilms, int stop = 0)
+void afficherListeFilms(const ListeFilms& listeFilms)
 {
 	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = "\n\033[35m########################################\033[0m\n";
-	cout << ligneDeSeparation << endl;
+	static const string ligneDeSeparation = {};
+	cout << ligneDeSeparation;
 	//TODO: Changer le for pour utiliser un span.
-	if (stop == 0) {
-		stop = listeFilms.nElements;
-	}
-	for (const Film* filmPtr : spanListeFilms(listeFilms).first(stop)) {
+	for (const Film* filmPtr : spanListeFilms(listeFilms)) {
 		//TODO: Afficher le film.
-		cout << "  " << filmPtr->titre << ", " << endl;
-		cout << "  " << filmPtr->realisateur << ", ";
-		cout << "  " << filmPtr->anneeSortie << ", ";
-		cout << "  " << filmPtr->recette  << endl;
-		Film film = *filmPtr;
-		afficherListeActeur(film);
-
-		cout << ligneDeSeparation << endl;
+		cout << "  " << filmPtr->titre;
+		if (filmPtr != listeFilms.elements[listeFilms.nElements - 1]) {
+			cout << ", ";
+		}
+		cout << endl;
+		cout << ligneDeSeparation;
 	}
 }
 
@@ -166,7 +160,7 @@ int main()
 	
 	cout << ligneDeSeparation << "Le premier film de la liste est:" << endl;
 	//TODO: Afficher le premier film de la liste.  Devrait être Alien.
-	afficherListeFilms(listeFilms, 1);
+	cout << listeFilms.elements[0]->titre << endl;
 	cout << ligneDeSeparation << "Les films sont:" << endl;
 	//TODO: Afficher la liste des films.  Il devrait y en avoir 7.
 	afficherListeFilms(listeFilms);

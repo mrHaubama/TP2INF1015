@@ -18,6 +18,8 @@ public:
 	ListeFilms();
 	ListeFilms(int capacite, int nElements, Film** elements);
 
+	int getNElements();
+
 	void ajouterFilm(Film* filmPtr);
 	void enleverFilm(Film* filmAEnleverPtr);
 
@@ -29,7 +31,7 @@ public:
 
 
 
-	friend std::span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs);
+	friend static std::span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs);
 
 
 private:
