@@ -193,8 +193,10 @@ void afficherActeur(const Acteur& acteur)
 }
 
 //TODO: Une fonction pour afficher un film avec tous ces acteurs (en utilisant la fonction afficherActeur ci-dessus).
-void afficherListeActeur(const Film* film) {
-
+void afficherListeActeur(Film& film) {
+	for (Acteur* acteurPtr : spanListeActeur(film.acteurs)) {
+		afficherActeur(*acteurPtr);
+	}
 }
 
 
