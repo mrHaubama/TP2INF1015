@@ -48,64 +48,6 @@ string lireString(istream& fichier)
 
 #pragma endregion//}
 
-span<Film*> spanListeFilms(const ListeFilms& listFilms) {
-	return span<Film*>(listFilms.elements, listFilms.nElements);
-}
-
-//TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
-void ajouterFilm(ListeFilms& listeFilms, Film* filmPtr) {
-	if (listeFilms.nElements == listeFilms.capacite) {
-		int nouvelleCapacite = 2 * listeFilms.capacite;
-		Film** nouvelleListeFilms = new Film * [nouvelleCapacite];
-		
-		for (int filmIndex: range(0,listeFilms.nElements)) {
-			nouvelleListeFilms[filmIndex] = listeFilms.elements[filmIndex];
-		}
-
-		delete[] listeFilms.elements;
-		listeFilms.elements = nouvelleListeFilms;
-		listeFilms.capacite = nouvelleCapacite;
-	}
-
-	int indexNouvelElement = listeFilms.nElements;
-	listeFilms.elements[indexNouvelElement] = filmPtr;
-	listeFilms.nElements++;
-}
-
-//TODO: Une fonction pour enlever un Film d'une ListeFilms (enlever le pointeur) sans effacer le film; la fonction prenant en paramètre un pointeur vers le film à enlever.  L'ordre des films dans la liste n'a pas à être conservé.
-void enleverFilm(ListeFilms& listeFilms, Film* filmAEnleverPtr) {
-	for (int filmIndex : range(0, listeFilms.nElements)) {
-		Film* filmPtr = listeFilms.elements[filmIndex];
-		if (filmAEnleverPtr == filmPtr) {
-			Film* dernierFilmPtr = listeFilms.elements[listeFilms.nElements - 1];
-			listeFilms.elements[filmIndex] = dernierFilmPtr;
-			listeFilms.nElements--;
-		}
-	}
-}
-
-
-//TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
-span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs) {
-	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
-}
-
-Acteur* chercherActeur(const ListeFilms& listeFilms, const string& nomActeur) {
-	for (Film* filmPtr : spanListeFilms(listeFilms)) {
-		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
-			if (acteurExistantPtr->nom == nomActeur) {
-				return acteurExistantPtr;
-			}		
-		}
-	}
-	return nullptr;
-}
-
-void ajouterActeur(ListeActeurs& listeActeurs, Acteur* ActeurPtr, int index) {
-	listeActeurs.elements[index] = ActeurPtr;
-
-}
-
 //TODO: Compléter les fonctions pour lire le fichier et créer/allouer une ListeFilms.  La ListeFilms devra être passée entre les fonctions, pour vérifier l'existence d'un Acteur avant de l'allouer à nouveau (cherché par nom en utilisant la fonction ci-dessus).
 Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 {
@@ -114,14 +56,13 @@ Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 	acteur.anneeNaissance = lireUint16 (fichier);
 	acteur.sexe           = lireUint8  (fichier);
 
-	Acteur* acteurPtr = chercherActeur(listeFilms, acteur.nom);
+	Acteur* acteurPtr = listeFilms.chercherActeur(acteur.nom);
 	if (acteurPtr != nullptr) {
 		return acteurPtr;
 	}
+
+	acteur.joueDans = ListeFilms{};
 	Acteur* nouvelleActeurPtr = new Acteur(acteur);
-	nouvelleActeurPtr->joueDans.elements = new Film * [1];
-	nouvelleActeurPtr->joueDans.nElements = 0;
-	nouvelleActeurPtr->joueDans.capacite = 1;
 	return nouvelleActeurPtr; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
 
@@ -140,8 +81,8 @@ Film* lireFilm(istream& fichier, ListeFilms& listeFilms)
 	for (int i = 0; i < film.acteurs.nElements; i++) {
 		Acteur* acteurPtr = lireActeur(fichier, listeFilms); //TODO: Placer l'acteur au bon endroit dans les acteurs du film.
 		//TODO: Ajouter le film à la liste des films dans lesquels l'acteur joue.
-		ajouterFilm(acteurPtr->joueDans, nouveauFilm);
-		ajouterActeur(nouveauFilm->acteurs, acteurPtr, i);
+		acteurPtr->joueDans.ajouterFilm(nouveauFilm);
+		nouveauFilm->acteurs.elements[i] = acteurPtr;
 	}
 	return nouveauFilm; //TODO: Retourner le pointeur vers le nouveau film.
 }
@@ -154,46 +95,14 @@ ListeFilms creerListe(string nomFichier)
 	int nElements = lireUint16(fichier);
 
 	//TODO: Créer une liste de films vide.
-		ListeFilms listeFilms = {};
-		listeFilms.elements = new Film* [1];
-		listeFilms.nElements = 0;
-		listeFilms.capacite = 1;
+	ListeFilms listeFilms{};
+
 	for (int i = 0; i < nElements; i++) {
-		Film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.
-		ajouterFilm(listeFilms, filmPtr);
+		Film* filmPtr = lireFilm(fichier, listeFilms); //TODO: Ajouter le film à la liste.à
+		listeFilms.ajouterFilm(filmPtr);
 	}
 	
 	return listeFilms; //TODO: Retourner la liste de films.
-}
-
-//TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
-void detruireFilm(ListeFilms& listeFilmsPrincipale, Film* filmADetruirePtr) {
-	for (Film* filmPtr : spanListeFilms(listeFilmsPrincipale)) {
-
-		for (Acteur* acteurPtr : spanListeActeur(filmPtr->acteurs)) {
-
-			enleverFilm(acteurPtr->joueDans, filmADetruirePtr);
-			if (acteurPtr->joueDans.nElements == 0) {
-				cout << "Suppression de l'acteur " << acteurPtr->nom << endl;
-				delete[] acteurPtr->joueDans.elements;
-				delete acteurPtr;
-				filmPtr->acteurs.nElements--;
-			}
-		}
-	}
-
-	enleverFilm(listeFilmsPrincipale, filmADetruirePtr);
-	delete[] filmADetruirePtr->acteurs.elements;
-
-	delete filmADetruirePtr;
-}
-
-//TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
-void detruireListeFilms(ListeFilms& listeFilms) {
-	for (Film* filmToDeletePtr : spanListeFilms(listeFilms)) {
-		detruireFilm(listeFilms, filmToDeletePtr);
-	}
-	delete[] listeFilms.elements;
 }
 
 void afficherActeur(const Acteur& acteur)

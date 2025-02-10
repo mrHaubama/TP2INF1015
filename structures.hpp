@@ -2,12 +2,39 @@
 // Structures mémoires pour une collection de films.
 
 #include <string>
+#include <span>
+#include <fstream>
 
-struct Film; struct Acteur; // Permet d'utiliser les types alors qu'ils seront défini après.
+struct Film; struct Acteur; struct ListeActeurs; // Permet d'utiliser les types alors qu'ils seront défini après.
 
+/*
 struct ListeFilms {
 	int capacite, nElements;
 	Film** elements; // Pointeur vers un tableau de Film*, chaque Film* pointant vers un Film.
+};*/
+
+class ListeFilms {
+public:
+	ListeFilms();
+	ListeFilms(int capacite, int nElements, Film** elements);
+
+	void ajouterFilm(Film* filmPtr);
+	void enleverFilm(Film* filmAEnleverPtr);
+
+	std::span<Film*> spanListeFilms() const;
+	Acteur* chercherActeur(const std::string& nomActeur) const;
+
+	void detruireFilm(Film* filmADetruirePtr);
+	void detruireListeFilms();
+
+
+
+	friend std::span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs);
+
+
+private:
+	int capacite_, nElements_;
+	Film** elements_; // Pointeur vers un tableau de Film*, chaque Film* pointant vers un Film.
 };
 
 struct ListeActeurs {
