@@ -18,7 +18,7 @@ public:
 	ListeFilms();
 	ListeFilms(int capacite, int nElements, Film** elements);
 
-	int getNElements();
+	int getNElements() const;
 
 	void ajouterFilm(Film* filmPtr);
 	void enleverFilm(Film* filmAEnleverPtr);
