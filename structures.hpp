@@ -25,8 +25,6 @@ public:
 
 	std::span<Film*> spanListeFilms() const;
 
-	void detruireListeFilms();
-
 	void afficherListeFilms() const;
 
 

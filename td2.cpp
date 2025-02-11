@@ -153,7 +153,7 @@ void detruireFilm(ListeFilms& listeFilm, Film* filmADetruirePtr) {
 			if (acteurPtr->joueDans.getNElements() == 0) {
 				cout << "Suppression de l'acteur " << acteurPtr->nom << endl;
 
-				acteurPtr->joueDans.detruireListeFilms(); // ATTENTION ERREUR??
+				detruireListeFilms(acteurPtr->joueDans); // ATTENTION ERREUR??
 				//delete[] acteurPtr->joueDans.elements;
 				delete acteurPtr;
 				filmPtr->acteurs.nElements--;
@@ -165,6 +165,15 @@ void detruireFilm(ListeFilms& listeFilm, Film* filmADetruirePtr) {
 	delete[] filmADetruirePtr->acteurs.elements;
 
 	delete filmADetruirePtr;
+}
+
+
+//TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
+void detruireListeFilms(ListeFilms& listeFilms) {
+	for (Film* filmToDeletePtr : listeFilms.spanListeFilms()) {
+		detruireFilm(listeFilms, filmToDeletePtr);
+	}
+	listeFilms.libererTableauFilm();
 }
 
 
@@ -234,5 +243,5 @@ int main()
 	
 	//TODO: Détruire tout avant de terminer le programme.  La bibliothèque de verification_allocation devrait afficher "Aucune fuite detectee." a la sortie du programme; il affichera "Fuite detectee:" avec la liste des blocs, s'il manque des delete.
 	
-	listeFilms.detruireListeFilms();
+	detruireListeFilms(listeFilms);
 }

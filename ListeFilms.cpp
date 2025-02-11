@@ -55,15 +55,30 @@ span<Film*> ListeFilms::spanListeFilms() const {
 	return span<Film*>(elements_, nElements_);
 }
 
-//TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
-void ListeFilms::detruireListeFilms() {
-	for (Film* filmToDeletePtr : spanListeFilms()) {
-		detruireFilm(filmToDeletePtr);
-	}
-	delete[] elements_;
-}
-
 
 int ListeFilms::getNElements() const {
 	return nElements_;
 }
+<<<<<<< Updated upstream
+=======
+
+void ListeFilms::afficherListeFilms() const{
+	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
+	static const string ligneDeSeparation = {};
+	cout << ligneDeSeparation;
+	//TODO: Changer le for pour utiliser un span.
+	for (const Film* filmPtr : spanListeFilms()) {
+		//TODO: Afficher le film.
+		cout << "  " << filmPtr->titre;
+		if (filmPtr != elements_[nElements_ - 1]) {
+			cout << ", ";
+		}
+		cout << endl;
+		cout << ligneDeSeparation;
+	}
+}
+
+void ListeFilms::libererTableauFilm() {
+	delete[] elements_;
+}
+>>>>>>> Stashed changes
