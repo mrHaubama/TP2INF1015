@@ -179,6 +179,28 @@ void afficherFilmographieActeur(const ListeFilms& listeFilms, const string& nomA
 		acteur->joueDans.afficherListeFilms();
 }
 
+
+void afficherListeFilms(const ListeFilms& listeFilms, int stop = 0) {
+	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
+	static const string ligneDeSeparation = "\n\033[35m########################################\033[0m\n";
+	cout << ligneDeSeparation << endl;
+	//TODO: Changer le for pour utiliser un span.
+	if (stop == 0) {
+		stop = listeFilms.nElements;
+	}
+	for (const Film* filmPtr : spanListeFilms(listeFilms).first(stop)) {
+		//TODO: Afficher le film.
+		cout << "  " << filmPtr->titre << ", " << endl;
+		cout << "  " << filmPtr->realisateur << ", ";
+		cout << "  " << filmPtr->anneeSortie << ", ";
+		cout << "  " << filmPtr->recette << endl;
+		Film film = *filmPtr;
+		afficherListeActeur(film);
+		cout << ligneDeSeparation << endl;
+
+	}
+}
+
 int main()
 {
 	bibliotheque_cours::activerCouleursAnsi();  // Permet sous Windows les "ANSI escape code" pour changer de couleurs https://en.wikipedia.org/wiki/ANSI_escape_code ; les consoles Linux/Mac les supportent normalement par défaut.
@@ -194,10 +216,10 @@ int main()
 	
 	cout << ligneDeSeparation << "Le premier film de la liste est:" << endl;
 	//TODO: Afficher le premier film de la liste.  Devrait être Alien.
-	cout << listeFilms.elements[0]->titre << endl;
+	cout << afficherListeFilms(listeFilms, 1) << endl;
 	cout << ligneDeSeparation << "Les films sont:" << endl;
 	//TODO: Afficher la liste des films.  Il devrait y en avoir 7.
-	listeFilms.afficherListeFilms();
+	afficherListeFilms(listeFilms);
 	//TODO: Modifier l'année de naissance de Benedict Cumberbatch pour être 1976 (elle était 0 dans les données lues du fichier).  Vous ne pouvez pas supposer l'ordre des films et des acteurs dans les listes, il faut y aller par son nom.
 	
 	cout << ligneDeSeparation << "Liste des films où Benedict Cumberbatch joue sont:" << endl;

@@ -67,19 +67,3 @@ void ListeFilms::detruireListeFilms() {
 int ListeFilms::getNElements() const {
 	return nElements_;
 }
-
-void ListeFilms::afficherListeFilms() const{
-	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = {};
-	cout << ligneDeSeparation;
-	//TODO: Changer le for pour utiliser un span.
-	for (const Film* filmPtr : spanListeFilms()) {
-		//TODO: Afficher le film.
-		cout << "  " << filmPtr->titre;
-		if (filmPtr != elements_[nElements_ - 1]) {
-			cout << ", ";
-		}
-		cout << endl;
-		cout << ligneDeSeparation;
-	}
-}
