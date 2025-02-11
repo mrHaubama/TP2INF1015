@@ -196,6 +196,7 @@ void afficherListeFilms(const ListeFilms& listeFilms, int stop = 0) {
 		cout << "  " << filmPtr->anneeSortie << ", ";
 		cout << "  " << filmPtr->recette << endl;
 		Film film = *filmPtr;
+		cout << "  liste d'acteurs dans le film:" << endl;
 		afficherListeActeur(film);
 		cout << ligneDeSeparation << endl;
 
