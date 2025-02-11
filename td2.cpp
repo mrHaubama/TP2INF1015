@@ -150,7 +150,7 @@ void detruireFilm(ListeFilms& listeFilm, Film* filmADetruirePtr) {
 		for (Acteur* acteurPtr : spanListeActeur(filmPtr->acteurs)) {
 
 			acteurPtr->joueDans.enleverFilm(filmADetruirePtr);
-			if (acteurPtr->joueDans.getNElements() == 0) {
+			if (acteurPtr->joueDans.obtenirNElements() == 0) {
 				cout << "Suppression de l'acteur " << acteurPtr->nom << endl;
 
 				detruireListeFilms(acteurPtr->joueDans); // ATTENTION ERREUR??
@@ -185,7 +185,7 @@ void afficherFilmographieActeur(const ListeFilms& listeFilms, const string& nomA
 	if (acteur == nullptr)
 		cout << "Aucun acteur de ce nom" << endl;
 	else
-		acteur->joueDans.afficherListeFilms();
+		afficherListeFilms(acteur->joueDans);
 }
 
 
@@ -195,9 +195,9 @@ void afficherListeFilms(const ListeFilms& listeFilms, int stop = 0) {
 	cout << ligneDeSeparation << endl;
 	//TODO: Changer le for pour utiliser un span.
 	if (stop == 0) {
-		stop = listeFilms.nElements;
+		stop = listeFilms.obtenirNElements();
 	}
-	for (const Film* filmPtr : spanListeFilms(listeFilms).first(stop)) {
+	for (const Film* filmPtr : listeFilms.spanListeFilms().first(stop)) {
 		//TODO: Afficher le film.
 		cout << "  " << filmPtr->titre << ", " << endl;
 		cout << "  " << filmPtr->realisateur << ", ";
@@ -225,7 +225,7 @@ int main()
 	
 	cout << ligneDeSeparation << "Le premier film de la liste est:" << endl;
 	//TODO: Afficher le premier film de la liste.  Devrait être Alien.
-	cout << afficherListeFilms(listeFilms, 1) << endl;
+	afficherListeFilms(listeFilms, 1);
 	cout << ligneDeSeparation << "Les films sont:" << endl;
 	//TODO: Afficher la liste des films.  Il devrait y en avoir 7.
 	afficherListeFilms(listeFilms);
@@ -235,10 +235,10 @@ int main()
 	//TODO: Afficher la liste des films où Benedict Cumberbatch joue.  Il devrait y avoir Le Hobbit et Le jeu de l'imitation.
 	afficherFilmographieActeur(listeFilms, "Benedict Cumberbatch");
 	//TODO: Détruire et enlever le premier film de la liste (Alien).  Ceci devrait "automatiquement" (par ce que font vos fonctions) détruire les acteurs Tom Skerritt et John Hurt, mais pas Sigourney Weaver puisqu'elle joue aussi dans Avatar.
-	detruireFilm(listeFilms, listeFilms.elements[0]);
+	detruireFilm(listeFilms, listeFilms.obtenirPremierFilmPtr());
 	cout << ligneDeSeparation << "Les films sont maintenant:" << endl;
 	//TODO: Afficher la liste des films.
-	listeFilms.afficherListeFilms();
+	afficherListeFilms(listeFilms);
 	//TODO: Faire les appels qui manquent pour avoir 0% de lignes non exécutées dans le programme (aucune ligne rouge dans la couverture de code; c'est normal que les lignes de "new" et "delete" soient jaunes).  Vous avez aussi le droit d'effacer les lignes du programmes qui ne sont pas exécutée, si finalement vous pensez qu'elle ne sont pas utiles.
 	
 	//TODO: Détruire tout avant de terminer le programme.  La bibliothèque de verification_allocation devrait afficher "Aucune fuite detectee." a la sortie du programme; il affichera "Fuite detectee:" avec la liste des blocs, s'il manque des delete.

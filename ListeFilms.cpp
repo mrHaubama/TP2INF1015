@@ -56,26 +56,14 @@ span<Film*> ListeFilms::spanListeFilms() const {
 }
 
 
-int ListeFilms::getNElements() const {
+int ListeFilms::obtenirNElements() const {
 	return nElements_;
-}
-
-void ListeFilms::afficherListeFilms() const{
-	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = {};
-	cout << ligneDeSeparation;
-	//TODO: Changer le for pour utiliser un span.
-	for (const Film* filmPtr : spanListeFilms()) {
-		//TODO: Afficher le film.
-		cout << "  " << filmPtr->titre;
-		if (filmPtr != elements_[nElements_ - 1]) {
-			cout << ", ";
-		}
-		cout << endl;
-		cout << ligneDeSeparation;
-	}
 }
 
 void ListeFilms::libererTableauFilm() {
 	delete[] elements_;
+}
+
+Film* ListeFilms::obtenirPremierFilmPtr() const {
+	return elements_[0];
 }

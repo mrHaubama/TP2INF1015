@@ -18,14 +18,15 @@ public:
 	ListeFilms();
 	ListeFilms(int capacite, int nElements, Film** elements);
 
-	int getNElements() const;
-
 	void ajouterFilm(Film* filmPtr);
 	void enleverFilm(Film* filmAEnleverPtr);
 
 	std::span<Film*> spanListeFilms() const;
 
 	void libererTableauFilm();
+
+	int obtenirNElements() const;
+	Film* obtenirPremierFilmPtr() const;
 
 private:
 	int capacite_, nElements_;
