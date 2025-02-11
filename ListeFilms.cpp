@@ -13,19 +13,23 @@ ListeFilms::ListeFilms(int capacite, int nElements, Film** elements):
 	capacite_(capacite), nElements_(nElements), elements_(elements) {
 }
 
+void ListeFilms::agrandirListeFilm() {
+	int nouvelleCapacite = 2 * capacite_;
+	Film** nouvelleListeFilms = new Film * [nouvelleCapacite];
+
+	for (int filmIndex : range(0, nElements_)) {
+		nouvelleListeFilms[filmIndex] = elements_[filmIndex];
+	}
+
+	delete[] elements_;
+	elements_ = nouvelleListeFilms;
+	capacite_ = nouvelleCapacite;
+}
+
 //TODO: Une fonction pour ajouter un Film à une ListeFilms, le film existant déjà; on veut uniquement ajouter le pointeur vers le film existant.  Cette fonction doit doubler la taille du tableau alloué, avec au minimum un élément, dans le cas où la capacité est insuffisante pour ajouter l'élément.  Il faut alors allouer un nouveau tableau plus grand, copier ce qu'il y avait dans l'ancien, et éliminer l'ancien trop petit.  Cette fonction ne doit copier aucun Film ni Acteur, elle doit copier uniquement des pointeurs.
 void ListeFilms::ajouterFilm(Film* filmPtr) {
 	if (nElements_ == capacite_) {
-		int nouvelleCapacite = 2 * capacite_;
-		Film** nouvelleListeFilms = new Film* [nouvelleCapacite];
-
-		for (int filmIndex : range(0, nElements_)) {
-			nouvelleListeFilms[filmIndex] = elements_[filmIndex];
-		}
-
-		delete[] elements_;
-		elements_ = nouvelleListeFilms;
-		capacite_ = nouvelleCapacite;
+		agrandirListeFilm();
 	}
 
 	int indexNouvelElement = nElements_;

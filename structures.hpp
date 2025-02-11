@@ -34,6 +34,8 @@ public:
 private:
 	int capacite_, nElements_;
 	Film** elements_; // Pointeur vers un tableau de Film*, chaque Film* pointant vers un Film.
+
+	void agrandirListeFilm();
 };
 
 struct ListeActeurs {

@@ -131,7 +131,7 @@ span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs) {
 	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
 }
 
-Acteur* chercherActeur(ListeFilms& listeFilms, const string& nomActeur) {
+Acteur* chercherActeur(const ListeFilms& listeFilms, const string& nomActeur) {
 	for (Film* filmPtr : listeFilms.spanListeFilms()) {
 		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
 			if (acteurExistantPtr->nom == nomActeur) {
@@ -204,7 +204,7 @@ int main()
 	//TODO: Afficher la liste des films où Benedict Cumberbatch joue.  Il devrait y avoir Le Hobbit et Le jeu de l'imitation.
 	afficherFilmographieActeur(listeFilms, "Benedict Cumberbatch");
 	//TODO: Détruire et enlever le premier film de la liste (Alien).  Ceci devrait "automatiquement" (par ce que font vos fonctions) détruire les acteurs Tom Skerritt et John Hurt, mais pas Sigourney Weaver puisqu'elle joue aussi dans Avatar.
-	listeFilms.detruireFilm(listeFilms.elements[0]);
+	detruireFilm(listeFilms, listeFilms.elements[0]);
 	cout << ligneDeSeparation << "Les films sont maintenant:" << endl;
 	//TODO: Afficher la liste des films.
 	listeFilms.afficherListeFilms();
