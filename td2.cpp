@@ -61,7 +61,7 @@ Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 		return acteurPtr;
 	}
 
-	acteur.joueDans = ListeFilms{};
+	//acteur.joueDans = ListeFilms{};  ligne inutile??
 	Acteur* nouvelleActeurPtr = new Acteur(acteur);
 	return nouvelleActeurPtr; //TODO: Retourner un pointeur soit vers un acteur existant ou un nouvel acteur ayant les bonnes informations, selon si l'acteur existait déjà.  Pour fins de débogage, affichez les noms des acteurs crées; vous ne devriez pas voir le même nom d'acteur affiché deux fois pour la création.
 }
