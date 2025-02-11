@@ -25,9 +25,7 @@ public:
 
 	std::span<Film*> spanListeFilms() const;
 
-	void afficherListeFilms() const;
-
-
+	void libererTableauFilm();
 
 private:
 	int capacite_, nElements_;

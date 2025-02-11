@@ -59,8 +59,6 @@ span<Film*> ListeFilms::spanListeFilms() const {
 int ListeFilms::getNElements() const {
 	return nElements_;
 }
-<<<<<<< Updated upstream
-=======
 
 void ListeFilms::afficherListeFilms() const{
 	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
@@ -81,4 +79,3 @@ void ListeFilms::afficherListeFilms() const{
 void ListeFilms::libererTableauFilm() {
 	delete[] elements_;
 }
->>>>>>> Stashed changes
