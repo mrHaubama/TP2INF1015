@@ -24,17 +24,11 @@ public:
 	void enleverFilm(Film* filmAEnleverPtr);
 
 	std::span<Film*> spanListeFilms() const;
-	Acteur* chercherActeur(const std::string& nomActeur) const;
 
-	void detruireFilm(Film* filmADetruirePtr);
 	void detruireListeFilms();
 
 	void afficherListeFilms() const;
 
-
-
-
-	friend static std::span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs);
 
 
 private:

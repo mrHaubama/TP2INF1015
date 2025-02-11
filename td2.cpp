@@ -64,7 +64,7 @@ Acteur* lireActeur(istream& fichier, ListeFilms& listeFilms)
 	acteur.anneeNaissance = lireUint16 (fichier);
 	acteur.sexe           = lireUint8  (fichier);
 
-	Acteur* acteurPtr = listeFilms.chercherActeur(acteur.nom);
+	Acteur* acteurPtr = chercherActeur(listeFilms, acteur.nom);
 	if (acteurPtr != nullptr) {
 		return acteurPtr;
 	}
@@ -143,10 +143,36 @@ Acteur* chercherActeur(ListeFilms& listeFilms, const string& nomActeur) {
 }
 
 
+//TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
+void detruireFilm(ListeFilms& listeFilm, Film* filmADetruirePtr) {
+	for (Film* filmPtr : listeFilm.spanListeFilms()) {
+
+		for (Acteur* acteurPtr : spanListeActeur(filmPtr->acteurs)) {
+
+			acteurPtr->joueDans.enleverFilm(filmADetruirePtr);
+			if (acteurPtr->joueDans.getNElements() == 0) {
+				cout << "Suppression de l'acteur " << acteurPtr->nom << endl;
+
+				acteurPtr->joueDans.detruireListeFilms(); // ATTENTION ERREUR??
+				//delete[] acteurPtr->joueDans.elements;
+				delete acteurPtr;
+				filmPtr->acteurs.nElements--;
+			}
+		}
+	}
+
+	listeFilm.enleverFilm(filmADetruirePtr);
+	delete[] filmADetruirePtr->acteurs.elements;
+
+	delete filmADetruirePtr;
+}
+
+
+
 void afficherFilmographieActeur(const ListeFilms& listeFilms, const string& nomActeur)
 {
 	//TODO: Utiliser votre fonction pour trouver l'acteur (au lieu de le mettre à nullptr).
-	Acteur* acteur = listeFilms.chercherActeur(nomActeur);
+	Acteur* acteur = chercherActeur(listeFilms, nomActeur);
 	if (acteur == nullptr)
 		cout << "Aucun acteur de ce nom" << endl;
 	else

@@ -51,42 +51,6 @@ span<Film*> ListeFilms::spanListeFilms() const {
 	return span<Film*>(elements_, nElements_);
 }
 
-
-Acteur* ListeFilms::chercherActeur(const string& nomActeur) const {
-	for (Film* filmPtr : spanListeFilms()) {
-		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
-			if (acteurExistantPtr->nom == nomActeur) {
-				return acteurExistantPtr;
-			}
-		}
-	}
-	return nullptr;
-}
-
-//TODO: Une fonction pour détruire un film (relâcher toute la mémoire associée à ce film, et les acteurs qui ne jouent plus dans aucun films de la collection).  Noter qu'il faut enleve le film détruit des films dans lesquels jouent les acteurs.  Pour fins de débogage, affichez les noms des acteurs lors de leur destruction.
-void ListeFilms::detruireFilm(Film* filmADetruirePtr) {
-	for (Film* filmPtr : spanListeFilms()) {
-
-		for (Acteur* acteurPtr : spanListeActeur(filmPtr->acteurs)) {
-
-			acteurPtr->joueDans.enleverFilm(filmADetruirePtr);
-			if (acteurPtr->joueDans.getNElements() == 0) {
-				cout << "Suppression de l'acteur " << acteurPtr->nom << endl;
-				
-				acteurPtr->joueDans.detruireListeFilms(); // ATTENTION ERREUR??
-				//delete[] acteurPtr->joueDans.elements;
-				delete acteurPtr;
-				filmPtr->acteurs.nElements--;
-			}
-		}
-	}
-
-	enleverFilm(filmADetruirePtr);
-	delete[] filmADetruirePtr->acteurs.elements;
-
-	delete filmADetruirePtr;
-}
-
 //TODO: Une fonction pour détruire une ListeFilms et tous les films qu'elle contient.
 void ListeFilms::detruireListeFilms() {
 	for (Film* filmToDeletePtr : spanListeFilms()) {
