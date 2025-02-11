@@ -1,6 +1,6 @@
 ﻿/**
 * TD2
-* \file   mian.cpp
+* \file   td2.cpp
 * \author Thomas Pronovost et Mikkelsen Bazelais
 * \date   11 février 2025
 * Créé le 1 février 2025
@@ -121,9 +121,25 @@ void afficherActeur(const Acteur& acteur)
 
 //TODO: Une fonction pour afficher un film avec tous ces acteurs (en utilisant la fonction afficherActeur ci-dessus).
 void afficherListeActeur(Film& film) {
-	for (Acteur* acteurPtr : ListeFilms::spanListeActeur(film.acteurs)) {
+	for (Acteur* acteurPtr : spanListeActeur(film.acteurs)) {
 		afficherActeur(*acteurPtr);
 	}
+}
+
+//TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
+span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs) {
+	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
+}
+
+Acteur* chercherActeur(ListeFilms& listeFilms, const string& nomActeur) {
+	for (Film* filmPtr : listeFilms.spanListeFilms()) {
+		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
+			if (acteurExistantPtr->nom == nomActeur) {
+				return acteurExistantPtr;
+			}
+		}
+	}
+	return nullptr;
 }
 
 

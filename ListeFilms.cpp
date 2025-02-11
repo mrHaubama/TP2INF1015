@@ -52,12 +52,6 @@ span<Film*> ListeFilms::spanListeFilms() const {
 }
 
 
-//TODO: Une fonction pour trouver un Acteur par son nom dans une ListeFilms, qui retourne un pointeur vers l'acteur, ou nullptr si l'acteur n'est pas trouvé.  Devrait utiliser span.
-static span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs) {
-	return	span<Acteur*>(listeActeurs.elements, listeActeurs.nElements);
-}
-
-
 Acteur* ListeFilms::chercherActeur(const string& nomActeur) const {
 	for (Film* filmPtr : spanListeFilms()) {
 		for (Acteur* acteurExistantPtr : spanListeActeur(filmPtr->acteurs)) {
