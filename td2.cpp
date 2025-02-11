@@ -1,4 +1,12 @@
-﻿#pragma region "Includes"//{
+﻿/**
+* TD2
+* \file   mian.cpp
+* \author Thomas Pronovost et Mikkelsen Bazelais
+* \date   11 février 2025
+* Créé le 1 février 2025
+*/
+
+#pragma region "Includes"//{
 #define _CRT_SECURE_NO_WARNINGS // On permet d'utiliser les fonctions de copies de chaînes qui sont considérées non sécuritaires.
 
 #include "structures.hpp"      // Structures de données pour la collection de films en mémoire.
@@ -119,31 +127,14 @@ void afficherListeActeur(Film& film) {
 }
 
 
-void afficherListeFilms(const ListeFilms& listeFilms)
-{
-	//TODO: Utiliser des caractères Unicode pour définir la ligne de séparation (différente des autres lignes de séparations dans ce progamme).
-	static const string ligneDeSeparation = {};
-	cout << ligneDeSeparation;
-	//TODO: Changer le for pour utiliser un span.
-	for (const Film* filmPtr : spanListeFilms(listeFilms)) {
-		//TODO: Afficher le film.
-		cout << "  " << filmPtr->titre;
-		if (filmPtr != listeFilms.elements[listeFilms.nElements - 1]) {
-			cout << ", ";
-		}
-		cout << endl;
-		cout << ligneDeSeparation;
-	}
-}
-
 void afficherFilmographieActeur(const ListeFilms& listeFilms, const string& nomActeur)
 {
 	//TODO: Utiliser votre fonction pour trouver l'acteur (au lieu de le mettre à nullptr).
-	Acteur* acteur = chercherActeur(listeFilms, nomActeur);
+	Acteur* acteur = listeFilms.chercherActeur(nomActeur);
 	if (acteur == nullptr)
 		cout << "Aucun acteur de ce nom" << endl;
 	else
-		afficherListeFilms(acteur->joueDans);
+		acteur->joueDans.afficherListeFilms();
 }
 
 int main()
@@ -164,20 +155,20 @@ int main()
 	cout << listeFilms.elements[0]->titre << endl;
 	cout << ligneDeSeparation << "Les films sont:" << endl;
 	//TODO: Afficher la liste des films.  Il devrait y en avoir 7.
-	afficherListeFilms(listeFilms);
+	listeFilms.afficherListeFilms();
 	//TODO: Modifier l'année de naissance de Benedict Cumberbatch pour être 1976 (elle était 0 dans les données lues du fichier).  Vous ne pouvez pas supposer l'ordre des films et des acteurs dans les listes, il faut y aller par son nom.
 	
 	cout << ligneDeSeparation << "Liste des films où Benedict Cumberbatch joue sont:" << endl;
 	//TODO: Afficher la liste des films où Benedict Cumberbatch joue.  Il devrait y avoir Le Hobbit et Le jeu de l'imitation.
 	afficherFilmographieActeur(listeFilms, "Benedict Cumberbatch");
 	//TODO: Détruire et enlever le premier film de la liste (Alien).  Ceci devrait "automatiquement" (par ce que font vos fonctions) détruire les acteurs Tom Skerritt et John Hurt, mais pas Sigourney Weaver puisqu'elle joue aussi dans Avatar.
-	detruireFilm(listeFilms, listeFilms.elements[0]);
+	listeFilms.detruireFilm(listeFilms.elements[0]);
 	cout << ligneDeSeparation << "Les films sont maintenant:" << endl;
 	//TODO: Afficher la liste des films.
-	afficherListeFilms(listeFilms);
+	listeFilms.afficherListeFilms();
 	//TODO: Faire les appels qui manquent pour avoir 0% de lignes non exécutées dans le programme (aucune ligne rouge dans la couverture de code; c'est normal que les lignes de "new" et "delete" soient jaunes).  Vous avez aussi le droit d'effacer les lignes du programmes qui ne sont pas exécutée, si finalement vous pensez qu'elle ne sont pas utiles.
 	
 	//TODO: Détruire tout avant de terminer le programme.  La bibliothèque de verification_allocation devrait afficher "Aucune fuite detectee." a la sortie du programme; il affichera "Fuite detectee:" avec la liste des blocs, s'il manque des delete.
 	
-	detruireListeFilms(listeFilms);
+	listeFilms.detruireListeFilms();
 }

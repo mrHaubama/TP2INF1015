@@ -29,6 +29,9 @@ public:
 	void detruireFilm(Film* filmADetruirePtr);
 	void detruireListeFilms();
 
+	void afficherListeFilms() const;
+
+
 
 
 	friend static std::span<Acteur*> spanListeActeur(ListeActeurs& listeActeurs);
